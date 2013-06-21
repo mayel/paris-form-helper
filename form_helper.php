@@ -84,6 +84,32 @@ class Helpers_Form
         return $this->input_field("password", $name, $attributes, $options);
     }
 
+    public function date_field($name, array $attributes=array(), array $options=array())
+    {
+        $options = array_merge(array(
+            'format' => 'Y-m-d',
+        ), $options);
+        return $this->datetime_field($name, $attributes, $options);
+    }
+
+    public function datetime_field($name, array $attributes=array(), array $options=array())
+    {
+        $options = array_merge(array(
+            'format' => 'Y-m-d H:i:s',
+        ), $options);
+
+        $value = $this->value_for_name($name, $attributes, $options);
+        if (! empty($value)) {
+            $date  = new DateTime($value);
+            $value = $date->format($options['format']);
+        }
+
+        $attributes = array_merge(array(
+            'value' => $value,
+        ), $attributes);
+        return $this->input_field("text", $name, $attributes, $options);
+    }
+
     private function input_field($type, $name, array $attributes=array(), array $options=array())
     {
         $attributes = array_merge(array(
@@ -191,11 +217,11 @@ class Helpers_Form
         if (isset($options['always_empty']) && $options['always_empty'] === true) {
             return '';
         }
-        if ($this->resource instanceof Model) {
-            return $this->resource->get($name);
-        }
         if (isset($attributes['value']) && $attributes['value'] === true) {
             return $attributes['value'];
+        }
+        if ($this->resource instanceof Model) {
+            return $this->resource->get($name);
         }
     }
 }

@@ -1,0 +1,30 @@
+{
+    "name": "nicolas-brousse/paris-form-helper",
+    "type": "library",
+    "description": "Form helper for Paris ORM inspired by ActiveView::Helpers::FormHelper",
+    "keywords": ["paris", "helper", "active view", "form"],
+    "support": {
+        "issues": "https://github.com/nicolas-brousse/paris-form-helper/issues",
+        "source": "https://github.com/nicolas-brousse/paris-form-helper"
+    },
+    "authors": [
+        {
+            "name": "Nicolas Brousse",
+            "email": "nicolas@opsone.net",
+            "homepage": "http://nicolas-brousse.fr",
+            "role": "Developer"
+        }
+    ],
+    "license": [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    },
+    "suggest": {
+        "j4mie/paris": "A lightweight Active Record implementation for PHP5, built on top of Idiorm"
+    },
+    "autoload": {
+        "classmap": ["form_helper.php"]
+    }
+}

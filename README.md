@@ -51,8 +51,8 @@ View example
 ### Start the form
 
 To start the form use `Helpers_Form::form_for($model, $form_action, array $options)`.  
-`$model`: the model to use for the form. So form values ares automaticaly setted. It can be null for standalone forms.  
-`$form_action`: url to send the datas.
+`$model`: the model to use for the form. So form values ares automaticaly setted. It can be null for standalone forms.    
+`$form_action`: url to send the datas.  
 `$options`: the options of the forms. The options are:
   * **method**: to precise the form method (post|get). Note: if you use Paris Model method are auto-setted **post** if the model is new and **put** for edition.
   * **html**: to add attributes on `<form />` tag.

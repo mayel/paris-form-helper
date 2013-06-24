@@ -87,6 +87,11 @@ class Helpers_Form
         return $this->input_field("email", $name, $attributes, $options);
     }
 
+    public function file_field($name, array $attributes=array(), array $options=array()) {
+        $this->options['html']['enctype'] = 'multipart/form-data';
+        return $this->input_field("file", $name, $attributes, $options);
+    }
+
     public function password_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("password", $name, $attributes, $options);
     }
@@ -117,6 +122,24 @@ class Helpers_Form
         return $this->input_field("text", $name, $attributes, $options);
     }
 
+    public function checkbox($name, array $attributes=array(), array $options=array())
+    {
+        $options = array_merge(array(
+            'uncheck_value' => isset($options['uncheck_value']) ? $options['uncheck_value'] : '0',
+            'check_value'   => isset($options['check_value']) ? $options['check_value'] : '1',
+        ), $options);
+
+        $checkbox_attributes = array_merge(array(
+            'value' => $options['check_value'],
+        ), $attributes);
+
+        if ($this->resource->get($name) == $options['check_value']) {
+            $checkbox_attributes['checked'] = 'checked';
+        }
+
+        return $this->hidden_field($name, $options['uncheck_value']) . $this->input_field('checkbox', $name, $checkbox_attributes);
+    }
+
     private function input_field($type, $name, array $attributes=array(), array $options=array())
     {
         $attributes = array_merge(array(
@@ -134,24 +157,6 @@ class Helpers_Form
             'name'  => $this->name_attribute($name),
         ), $attributes);
         return $this->tag('textarea', $attributes, $this->value_for_name($name, $attributes, $options));
-    }
-
-    public function checkbox($name, array $attributes=array(), array $options=array())
-    {
-        $options = array_merge(array(
-            'uncheck_value' => isset($options['uncheck_value']) ? $options['uncheck_value'] : '0',
-            'check_value'   => isset($options['check_value']) ? $options['check_value'] : '1',
-        ), $options);
-
-        $checkbox_attributes = array_merge(array(
-            'value' => $options['check_value'],
-        ), $attributes);
-
-        if ($this->resource->get($name) == $options['check_value']) {
-            $checkbox_attributes['checked'] = 'checked';
-        }
-
-        return $this->hidden_field($name, $options['uncheck_value']) . $this->input_field('checkbox', $name, $checkbox_attributes);
     }
 
     public function submit($label, array $attributes=array()) {

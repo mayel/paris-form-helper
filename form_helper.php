@@ -14,6 +14,13 @@ class Helpers_Form
         $this->options  = $options;
     }
 
+    /**
+     * 
+     *
+     * @param mixed     $resource
+     * @param string    $action
+     * @param array     $options
+     */
     static function form_for($resource=null, $action=null, array $options=array())
     {
         if (! is_null(self::$_instance)) {
@@ -98,7 +105,7 @@ class Helpers_Form
             'format' => 'Y-m-d H:i:s',
         ), $options);
 
-        $value = $this->value_for_name($name, $attributes, $options);
+        $value = $this->value_for_name($name, $attributes, $options, false);
         if (! empty($value)) {
             $date  = new DateTime($value);
             $value = $date->format($options['format']);
@@ -116,7 +123,7 @@ class Helpers_Form
             'type'  => $type,
             'id'    => $type === 'hidden' ? null : $this->id_attribute($name),
             'name'  => $this->name_attribute($name),
-            'value' => $type === 'password' ? $this->value_for_name($name, $attributes, $options) : $this->h($this->value_for_name($name, $attributes, $options)),
+            'value' => $this->value_for_name($name, $attributes, $options, $type === 'password'),
         ), $attributes);
         return $this->tag('input', $attributes);
     }
@@ -203,7 +210,8 @@ class Helpers_Form
         return htmlspecialchars($str, $quote_style, $charset); 
     }
 
-    private function resource_name() {
+    private function resource_name()
+    {
         if ($this->resource instanceof Model) {
             return $this->to_camelcase(get_class($this->resource));
         }
@@ -213,15 +221,19 @@ class Helpers_Form
         return null;
     }
 
-    private function value_for_name($name, array $attributes=array(), array $options=array()) {
+    private function value_for_name($name, array $attributes=array(), array $options=array(), $escape=true)
+    {
         if (isset($options['always_empty']) && $options['always_empty'] === true) {
             return '';
         }
+        $value = null;
         if (isset($attributes['value']) && $attributes['value'] === true) {
-            return $attributes['value'];
+            $value = $attributes['value'];
         }
-        if ($this->resource instanceof Model) {
-            return $this->resource->get($name);
+        elseif ($this->resource instanceof Model) {
+            $value = $this->resource->get($name);
         }
+
+        return $escape === true ? $this->h($value) : $value;
     }
 }

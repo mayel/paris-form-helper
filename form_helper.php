@@ -350,6 +350,9 @@ class Helpers_Form
         if ($this->resource instanceof Model) {
             return $this->to_camelcase(get_class($this->resource));
         }
+        if ($this->resource instanceof StdClass) {
+            return $this->to_camelcase(get_class($this->resource));
+        }
         if (is_string($this->resource)) {
             return $this->resource;
         }
@@ -371,6 +374,12 @@ class Helpers_Form
         elseif ($this->resource instanceof Model) {
             $value = $this->resource->get($name);
         }
+        elseif ($this->resource instanceof StdClass) {
+            $value = $this->resource->{$name};
+        }
+        elseif (is_array($this->resource)) {
+            $value = isset($this->resource[$name]) ? $this->resource[$name] : null;
+        }
 
         return $escape === true ? $this->h($value) : $value;
     }
@@ -382,6 +391,9 @@ class Helpers_Form
     {
         if ($entry instanceof Model) {
             return $entry->get($property);
+        }
+        if ($entry instanceof StdClass) {
+            return $entry->{$property};
         }
         if (is_array($entry) && isset($entry[$property])) {
             return $entry[$property];

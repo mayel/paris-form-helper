@@ -155,7 +155,8 @@ class Helpers_Form
     public function date_field($name, array $attributes=array(), array $options=array())
     {
         $options = array_merge(array(
-            'format' => 'Y-m-d',
+            'in_format' => 'Y-m-d',
+            'format'    => 'Y-m-d',
         ), $options);
         return $this->datetime_field($name, $attributes, $options);
     }
@@ -166,12 +167,12 @@ class Helpers_Form
     public function datetime_field($name, array $attributes=array(), array $options=array())
     {
         $options = array_merge(array(
-            'format' => 'Y-m-d H:i:s',
+            'in_format' => 'Y-m-d H:i:s',
+            'format'    => 'Y-m-d H:i:s',
         ), $options);
 
         $value = $this->value_for_name($name, $attributes, $options, false);
-        if (! empty($value)) {
-            $date  = new DateTime($value);
+        if ($date = DateTime::createFromFormat($options['in_format'], $value)) {
             $value = $date->format($options['format']);
         }
 

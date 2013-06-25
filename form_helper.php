@@ -227,6 +227,47 @@ class Helpers_Form
         return $this->tag('textarea', $attributes, $this->value_for_name($name, $attributes, $options));
     }
 
+    /**
+     * 
+     */
+    public function collection_select($name, $collection, $value_property, $text_property, array $attributes=array(), array $options=array())
+    {
+        if (! is_array($collection) && ! $collection instanceof Model) {
+            throw new Exception(printf('Argument 2 passed to %s must implement interface Iterator or array, %s given  (in <b>%s</b> line %d)',
+                __METHOD__,
+                gettype($collection),
+                __FILE__,
+                __LINE__
+            ));
+        }
+
+        $options_tags = '';
+        if (isset($options['include_blank']) && $options['include_blank'] === true) {
+            $options_tags .= $this->tag('option', array(
+                'value' => '',
+            ), '');
+        }
+        foreach ($collection as $entry)
+        {
+            $entry_value = $this->get_collection_option_property($entry, $value_property);
+            $options_tags .= $this->tag('option', array(
+                'value'    => $entry_value,
+                'selected' => $entry_value == $this->value_for_name($name, $attributes, $options) ? 'selected' : null,
+            ),
+                $this->get_collection_option_property($entry, $text_property)
+            );
+        }
+
+        $attributes = array_merge(array(
+            'id'    => $this->id_attribute($name),
+            'name'  => $this->name_attribute($name),
+        ), $attributes);
+        return $this->tag('select', $attributes, $options_tags);
+    }
+
+    /**
+     * 
+     */
     public function submit($label, array $attributes=array()) {
         return $this->tag(
             'button',
@@ -332,5 +373,19 @@ class Helpers_Form
         }
 
         return $escape === true ? $this->h($value) : $value;
+    }
+
+    /**
+     * 
+     */
+    private function get_collection_option_property($entry, $property)
+    {
+        if ($entry instanceof Model) {
+            return $entry->get($property);
+        }
+        if (is_array($entry) && isset($entry[$property])) {
+            return $entry[$property];
+        }
+        return null;
     }
 }

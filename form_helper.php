@@ -306,8 +306,25 @@ class Helpers_Form
     /**
      * 
      */
+    private function resource_name()
+    {
+        if ($this->resource instanceof Model) {
+            return $this->to_camelcase(get_class($this->resource));
+        }
+        if ($this->resource instanceof StdClass) {
+            return $this->to_camelcase(get_class($this->resource));
+        }
+        if (is_string($this->resource)) {
+            return $this->resource;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     */
     private function id_attribute($id) {
-        if ($this->resource) {
+        if ($this->resource_name()) {
             $id = $this->resource_name() . '_' . $id;
         }
         return strtolower($id);
@@ -317,7 +334,7 @@ class Helpers_Form
      * 
      */
     private function name_attribute($name) {
-        if ($this->resource) {
+        if ($this->resource_name()) {
             $name = $this->resource_name() . '[' . $name . ']';
         }
         return strtolower($name);
@@ -340,23 +357,6 @@ class Helpers_Form
      */
     private function h($str, $quote_style = ENT_QUOTES, $charset='utf-8') {
         return htmlspecialchars($str, $quote_style, $charset); 
-    }
-
-    /**
-     * 
-     */
-    private function resource_name()
-    {
-        if ($this->resource instanceof Model) {
-            return $this->to_camelcase(get_class($this->resource));
-        }
-        if ($this->resource instanceof StdClass) {
-            return $this->to_camelcase(get_class($this->resource));
-        }
-        if (is_string($this->resource)) {
-            return $this->resource;
-        }
-        return null;
     }
 
     /**

@@ -232,7 +232,7 @@ class Helpers_Form
      */
     public function collection_select($name, $collection, $value_property, $text_property, array $attributes=array(), array $options=array())
     {
-        if (! is_array($collection) && ! $collection instanceof Model) {
+        if (! is_array($collection) && ! $collection instanceof Iterator) {
             throw new Exception(printf('Argument 2 passed to %s must implement interface Iterator or array, %s given  (in <b>%s</b> line %d)',
                 __METHOD__,
                 gettype($collection),

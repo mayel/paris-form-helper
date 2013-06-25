@@ -2,12 +2,32 @@
 
 class Helpers_Form
 {
+    /**
+     * @var
+     */
     private static $_instance = null;
 
+    /**
+     * @var
+     */
     private $resource = null;
+    /**
+     * @var
+     */
     private $action   = null;
+    /**
+     * @var
+     */
     private $options  = array();
 
+
+    /**
+     * Constructor
+     *
+     * @param mixed     $resource
+     * @param string    $action
+     * @param array     $options
+     */
     private function __construct($resource, $action, $options) {
         $this->resource = $resource;
         $this->action   = $action;
@@ -20,6 +40,8 @@ class Helpers_Form
      * @param mixed     $resource
      * @param string    $action
      * @param array     $options
+     *
+     * @return
      */
     static function form_for($resource=null, $action=null, array $options=array())
     {
@@ -34,6 +56,11 @@ class Helpers_Form
         return self::$_instance;
     }
 
+    /**
+     * 
+     *
+     * @return mixed
+     */
     static function end_form_for() {
         if (is_null(self::$_instance)) {
             return;
@@ -42,7 +69,15 @@ class Helpers_Form
         echo self::$_instance->render_form(self::form_for());
     }
 
-    public function render_form($content) {
+    /**
+     * Render the form
+     *
+     * @param string $content   Content of the form
+     *
+     * @return string  Form in hmtl format
+     */
+    public function render_form($content)
+    {
         $method = isset($this->options['method']) ? strtolower($this->options['method']) : 'get';
 
         if ($this->resource instanceof Model) {
@@ -64,6 +99,9 @@ class Helpers_Form
         return $this->tag('form', $options['html'], $content);
     }
 
+    /**
+     * 
+     */
     public function label($name, $label=null, array $attributes=array(), array $options=array()) {
         $attributes = array_merge(array(
             'for' => $this->id_attribute($name),
@@ -71,6 +109,9 @@ class Helpers_Form
         return $this->tag("label", $attributes, $label);
     }
 
+    /**
+     * 
+     */
     public function hidden_field($name, $value, array $attributes=array(), array $options=array())
     {
         $attributes = array_merge(array(
@@ -79,23 +120,38 @@ class Helpers_Form
         return $this->input_field("hidden", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function text_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("text", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function email_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("email", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function file_field($name, array $attributes=array(), array $options=array()) {
         $this->options['html']['enctype'] = 'multipart/form-data';
         return $this->input_field("file", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function password_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("password", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function date_field($name, array $attributes=array(), array $options=array())
     {
         $options = array_merge(array(
@@ -104,6 +160,9 @@ class Helpers_Form
         return $this->datetime_field($name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function datetime_field($name, array $attributes=array(), array $options=array())
     {
         $options = array_merge(array(
@@ -122,6 +181,9 @@ class Helpers_Form
         return $this->input_field("text", $name, $attributes, $options);
     }
 
+    /**
+     * 
+     */
     public function checkbox($name, array $attributes=array(), array $options=array())
     {
         $options = array_merge(array(
@@ -140,6 +202,9 @@ class Helpers_Form
         return $this->hidden_field($name, $options['uncheck_value']) . $this->input_field('checkbox', $name, $checkbox_attributes);
     }
 
+    /**
+     * 
+     */
     private function input_field($type, $name, array $attributes=array(), array $options=array())
     {
         $attributes = array_merge(array(
@@ -151,6 +216,9 @@ class Helpers_Form
         return $this->tag('input', $attributes);
     }
 
+    /**
+     * 
+     */
     public function text_area($name, array $attributes=array(), array $options=array()) {
         $attributes = array_merge(array(
             'id'    => $this->id_attribute($name),
@@ -169,6 +237,9 @@ class Helpers_Form
         );
     }
 
+    /**
+     * 
+     */
     private function tag($tag_name, $attributes, $content=null)
     {
         $attributes = $this->attributes_to_string($attributes);
@@ -180,6 +251,9 @@ class Helpers_Form
         }
     }
 
+    /**
+     * 
+     */
     private function attributes_to_string(array $attributes=array()) {
         $string_attributes = "";
         foreach (array_filter($attributes, create_function('$x', 'return isset($x);')) as $attribute=>$value) {
@@ -188,6 +262,9 @@ class Helpers_Form
         return $string_attributes;
     }
 
+    /**
+     * 
+     */
     private function id_attribute($id) {
         if ($this->resource) {
             $id = $this->resource_name() . '_' . $id;
@@ -195,6 +272,9 @@ class Helpers_Form
         return strtolower($id);
     }
 
+    /**
+     * 
+     */
     private function name_attribute($name) {
         if ($this->resource) {
             $name = $this->resource_name() . '[' . $name . ']';
@@ -202,6 +282,9 @@ class Helpers_Form
         return strtolower($name);
     }
 
+    /**
+     * 
+     */
     private function to_camelcase($str) {
         $str[0] = strtolower($str[0]);
         return preg_replace_callback(
@@ -211,10 +294,16 @@ class Helpers_Form
         );
     }
 
+    /**
+     * 
+     */
     private function h($str, $quote_style = ENT_QUOTES, $charset='utf-8') {
         return htmlspecialchars($str, $quote_style, $charset); 
     }
 
+    /**
+     * 
+     */
     private function resource_name()
     {
         if ($this->resource instanceof Model) {
@@ -226,6 +315,9 @@ class Helpers_Form
         return null;
     }
 
+    /**
+     * 
+     */
     private function value_for_name($name, array $attributes=array(), array $options=array(), $escape=true)
     {
         if (isset($options['always_empty']) && $options['always_empty'] === true) {

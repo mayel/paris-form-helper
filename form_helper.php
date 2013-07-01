@@ -172,7 +172,7 @@ class Helpers_Form
         ), $options);
 
         $value = $this->value_for_name($name, $attributes, $options, false);
-        if ($date = DateTime::createFromFormat($options['in_format'], $value)) {
+        if ($date = $this->create_date_from_format($options['in_format'], $value)) {
             $value = $date->format($options['format']);
         }
 
@@ -400,5 +400,29 @@ class Helpers_Form
             return $entry[$property];
         }
         return null;
+    }
+
+    /**
+     * Create DateTime from format
+     */
+    private function create_date_from_format($format, $value)
+    {
+        $ugly = strptime($value, strtr($format, array(
+            'Y' => '%Y',
+            'm' => '%m',
+            'd' => '%d',
+            'H' => '%I',
+            'i' => '%M',
+            's' => '%S',
+        )));
+
+        if (! empty($ugly['unparsed'])) {
+            return false;
+        }
+
+        $date = new DateTime();
+        $date->setDate($ugly['tm_year'] + 1900, $ugly['tm_mon'] + 1, $ugly['tm_mday']);
+        $date->setTime($ugly['tm_hour'], $ugly['tm_min'], $ugly['tm_sec']);
+        return $date;
     }
 }

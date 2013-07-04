@@ -35,7 +35,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      *
      * @param mixed     $resource
      * @param string    $action
@@ -57,7 +57,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      *
      * @return mixed
      */
@@ -100,7 +100,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function label($name, $label=null, array $attributes=array(), array $options=array()) {
         $attributes = array_merge(array(
@@ -110,7 +110,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function hidden_field($name, $value, array $attributes=array(), array $options=array())
     {
@@ -121,21 +121,21 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function text_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("text", $name, $attributes, $options);
     }
 
     /**
-     * 
+     *
      */
     public function email_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("email", $name, $attributes, $options);
     }
 
     /**
-     * 
+     *
      */
     public function file_field($name, array $attributes=array(), array $options=array()) {
         $this->options['html']['enctype'] = 'multipart/form-data';
@@ -143,14 +143,14 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function password_field($name, array $attributes=array(), array $options=array()) {
         return $this->input_field("password", $name, $attributes, $options);
     }
 
     /**
-     * 
+     *
      */
     public function date_field($name, array $attributes=array(), array $options=array())
     {
@@ -162,7 +162,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function datetime_field($name, array $attributes=array(), array $options=array())
     {
@@ -183,7 +183,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function checkbox($name, array $attributes=array(), array $options=array())
     {
@@ -204,7 +204,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function input_field($type, $name, array $attributes=array(), array $options=array())
     {
@@ -218,7 +218,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function text_area($name, array $attributes=array(), array $options=array()) {
         $attributes = array_merge(array(
@@ -229,7 +229,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function collection_select($name, $collection, $value_property, $text_property, array $attributes=array(), array $options=array())
     {
@@ -267,7 +267,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     public function submit($label, array $attributes=array()) {
         return $this->tag(
@@ -280,7 +280,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function tag($tag_name, $attributes, $content=null)
     {
@@ -294,7 +294,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function attributes_to_string(array $attributes=array()) {
         $string_attributes = "";
@@ -305,7 +305,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function resource_name()
     {
@@ -322,7 +322,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function id_attribute($id) {
         if ($this->resource_name()) {
@@ -332,7 +332,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function name_attribute($name) {
         if ($this->resource_name()) {
@@ -342,7 +342,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function to_camelcase($str) {
         $str[0] = strtolower($str[0]);
@@ -354,14 +354,14 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function h($str, $quote_style = ENT_QUOTES, $charset='utf-8') {
-        return htmlspecialchars($str, $quote_style, $charset); 
+        return htmlspecialchars($str, $quote_style, $charset);
     }
 
     /**
-     * 
+     *
      */
     private function value_for_name($name, array $attributes=array(), array $options=array(), $escape=true)
     {
@@ -386,7 +386,7 @@ class Helpers_Form
     }
 
     /**
-     * 
+     *
      */
     private function get_collection_option_property($entry, $property)
     {
@@ -416,7 +416,7 @@ class Helpers_Form
             's' => '%S',
         )));
 
-        if (! empty($ugly['unparsed'])) {
+        if ($ugly == false || ! empty($ugly['unparsed'])) {
             return false;
         }
 

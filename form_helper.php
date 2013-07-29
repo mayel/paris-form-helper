@@ -231,7 +231,7 @@ class Helpers_Form
     /**
      *
      */
-    public function collection_select($name, $collection, $value_property, $text_property, array $attributes=array(), array $options=array())
+    public function collection_select($name, $collection, $value_property=null, $text_property=null, array $attributes=array(), array $options=array())
     {
         if (! is_array($collection) && ! $collection instanceof Iterator) {
             throw new Exception(printf('Argument 2 passed to %s must implement interface Iterator or array, %s given  (in <b>%s</b> line %d)',
@@ -248,14 +248,15 @@ class Helpers_Form
                 'value' => '',
             ), '');
         }
-        foreach ($collection as $entry)
+
+        foreach ($collection as $k=>$entry)
         {
-            $entry_value = $this->get_collection_option_property($entry, $value_property);
+            $entry_value   = !is_null($value_property) ? $this->get_collection_option_property($entry, $value_property) : $k;
             $options_tags .= $this->tag('option', array(
                 'value'    => $entry_value,
                 'selected' => $entry_value == $this->value_for_name($name, $attributes, $options) ? 'selected' : null,
             ),
-                $this->get_collection_option_property($entry, $text_property)
+                !is_null($value_property) ? $this->get_collection_option_property($entry, $text_property) : $entry
             );
         }
 

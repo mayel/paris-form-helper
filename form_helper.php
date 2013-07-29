@@ -243,7 +243,12 @@ class Helpers_Form
         }
 
         $options_tags = '';
-        if (isset($options['include_blank']) && $options['include_blank'] === true) {
+        if (isset($options['prompt']) && ! empty($options['prompt'])) {
+            $options_tags .= $this->tag('option', array(
+                'value' => '',
+            ), $options['prompt']);
+        }
+        elseif (isset($options['include_blank']) && $options['include_blank'] === true) {
             $options_tags .= $this->tag('option', array(
                 'value' => '',
             ), '');

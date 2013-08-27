@@ -1,7 +1,7 @@
 Paris Form Helper
 =================
 
-Form helper for [Paris ORM](http://github.com/j4mie/paris) and inspired by ActiveView::Helpers::FormHelper.  
+Form helper for [Paris ORM](http://github.com/j4mie/paris) and inspired by [ActiveView::Helpers::FormHelper](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html).  
 It can be use without Paris.
 
 

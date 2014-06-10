@@ -1,5 +1,7 @@
 <?php
 
+require_once '../form_helper.php';
+
 /**
  * Message model
  */

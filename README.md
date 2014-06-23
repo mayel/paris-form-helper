@@ -7,7 +7,7 @@ It can be use without Paris.
 
 ## Example
 
-An Paris Model
+A Paris Model
 
 ```php
 <?php

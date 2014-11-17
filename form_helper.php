@@ -28,7 +28,8 @@ class Helpers_Form
      * @param string    $action
      * @param array     $options
      */
-    private function __construct($resource, $action, $options) {
+    private function __construct($resource, $action, $options)
+    {
         $this->resource = $resource;
         $this->action   = $action;
         $this->options  = $options;
@@ -61,7 +62,8 @@ class Helpers_Form
      *
      * @return mixed
      */
-    static function end_form_for() {
+    static function end_form_for()
+    {
         if (is_null(self::$_instance)) {
             return;
         }
@@ -102,10 +104,16 @@ class Helpers_Form
     /**
      *
      */
-    public function label($name, $label=null, array $attributes=array(), array $options=array()) {
+    public function label($name, $label=null, array $attributes=array(), array $options=array())
+    {
+        if (is_empty($label)) {
+            $label = $name;
+        }
+
         $attributes = array_merge(array(
             'for' => $this->id_attribute($name),
         ), $attributes);
+
         return $this->tag("label", $attributes, $label);
     }
 
@@ -117,35 +125,41 @@ class Helpers_Form
         $attributes = array_merge(array(
             'value' => $value,
         ), $attributes);
+
         return $this->input_field("hidden", $name, $attributes, $options);
     }
 
     /**
      *
      */
-    public function text_field($name, array $attributes=array(), array $options=array()) {
+    public function text_field($name, array $attributes=array(), array $options=array())
+    {
         return $this->input_field("text", $name, $attributes, $options);
     }
 
     /**
      *
      */
-    public function email_field($name, array $attributes=array(), array $options=array()) {
+    public function email_field($name, array $attributes=array(), array $options=array())
+    {
         return $this->input_field("email", $name, $attributes, $options);
     }
 
     /**
      *
      */
-    public function file_field($name, array $attributes=array(), array $options=array()) {
+    public function file_field($name, array $attributes=array(), array $options=array())
+    {
         $this->options['html']['enctype'] = 'multipart/form-data';
+
         return $this->input_field("file", $name, $attributes, $options);
     }
 
     /**
      *
      */
-    public function password_field($name, array $attributes=array(), array $options=array()) {
+    public function password_field($name, array $attributes=array(), array $options=array())
+    {
         return $this->input_field("password", $name, $attributes, $options);
     }
 
@@ -158,6 +172,7 @@ class Helpers_Form
             'in_format' => 'Y-m-d',
             'format'    => 'Y-m-d',
         ), $options);
+
         return $this->datetime_field($name, $attributes, $options);
     }
 
@@ -179,6 +194,7 @@ class Helpers_Form
         $attributes = array_merge(array(
             'value' => $value,
         ), $attributes);
+
         return $this->input_field("text", $name, $attributes, $options);
     }
 
@@ -214,17 +230,20 @@ class Helpers_Form
             'name'  => $this->name_attribute($name),
             'value' => $this->value_for_name($name, $attributes, $options, $type === 'password'),
         ), $attributes);
+
         return $this->tag('input', $attributes);
     }
 
     /**
      *
      */
-    public function text_area($name, array $attributes=array(), array $options=array()) {
+    public function text_area($name, array $attributes=array(), array $options=array())
+    {
         $attributes = array_merge(array(
             'id'    => $this->id_attribute($name),
             'name'  => $this->name_attribute($name),
         ), $attributes);
+
         return $this->tag('textarea', $attributes, $this->value_for_name($name, $attributes, $options));
     }
 
@@ -269,13 +288,15 @@ class Helpers_Form
             'id'    => $this->id_attribute($name),
             'name'  => $this->name_attribute($name),
         ), $attributes);
+
         return $this->tag('select', $attributes, $options_tags);
     }
 
     /**
      *
      */
-    public function submit($label, array $attributes=array()) {
+    public function submit($label, array $attributes=array())
+    {
         return $this->tag(
             'button',
             array_merge(array(
@@ -291,22 +312,25 @@ class Helpers_Form
     private function tag($tag_name, $attributes, $content=null)
     {
         $attributes = $this->attributes_to_string($attributes);
+
         if (! is_null($content)) {
             return "<$tag_name$attributes>$content</$tag_name>\n";
         }
-        else {
-            return "<$tag_name$attributes />\n";
-        }
+
+        return "<$tag_name$attributes />\n";
     }
 
     /**
      *
      */
-    private function attributes_to_string(array $attributes=array()) {
+    private function attributes_to_string(array $attributes=array())
+    {
         $string_attributes = "";
+
         foreach (array_filter($attributes, create_function('$x', 'return isset($x);')) as $attribute=>$value) {
             $string_attributes .= " $attribute=\"$value\"";
         }
+
         return $string_attributes;
     }
 
@@ -324,34 +348,41 @@ class Helpers_Form
         if (is_string($this->resource)) {
             return $this->resource;
         }
+
         return null;
     }
 
     /**
      *
      */
-    private function id_attribute($id) {
+    private function id_attribute($id)
+    {
         if ($this->resource_name()) {
             $id = $this->resource_name() . '_' . $id;
         }
+
         return strtolower($id);
     }
 
     /**
      *
      */
-    private function name_attribute($name) {
+    private function name_attribute($name)
+    {
         if ($this->resource_name()) {
             $name = $this->resource_name() . '[' . $name . ']';
         }
+
         return strtolower($name);
     }
 
     /**
      *
      */
-    private function to_camelcase($str) {
+    private function to_camelcase($str)
+    {
         $str[0] = strtolower($str[0]);
+
         return preg_replace_callback(
             '/([A-Z])/',
             create_function('$c', 'return "_" . strtolower($c[1]);'),
@@ -362,7 +393,8 @@ class Helpers_Form
     /**
      *
      */
-    private function h($str, $quote_style = ENT_QUOTES, $charset='utf-8') {
+    private function h($str, $quote_style = ENT_QUOTES, $charset='utf-8')
+    {
         return htmlspecialchars($str, $quote_style, $charset);
     }
 
@@ -374,6 +406,7 @@ class Helpers_Form
         if (isset($options['always_empty']) && $options['always_empty'] === true) {
             return '';
         }
+
         $value = null;
         if (isset($attributes['value']) && $attributes['value'] === true) {
             $value = $attributes['value'];
@@ -405,6 +438,7 @@ class Helpers_Form
         if (is_array($entry) && isset($entry[$property])) {
             return $entry[$property];
         }
+
         return null;
     }
 

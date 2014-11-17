@@ -106,7 +106,7 @@ class Helpers_Form
      */
     public function label($name, $label=null, array $attributes=array(), array $options=array())
     {
-        if (is_empty($label)) {
+        if (empty($label)) {
             $label = $name;
         }
 
